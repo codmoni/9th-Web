@@ -1,44 +1,47 @@
 import './App.css'
-import { Router } from './router/Router';
-import { Route } from './router/Route';
-import { Link } from './router/Link';
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Home from './pages/Home';
+import NotFound from './pages/NotFound';
+import RootLayout from './layout/RootLayout';
+import Popular from './pages/Popular';
+import NowPlaying from './pages/NowPlaying';
+import Upcoming from './pages/Upcoming';
+import TopRated from './pages/TopRated';
 
-const Home = () => {
-  return (
-      <>
-        <h2>Home</h2>
-      </>
-  )
+// 2. 경로(path)와 보여줄 화면(element)를 정의
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <RootLayout />,
+    errorElement: <NotFound />,
+    children: [
+      {
+        index: true,
+        element: <Home />
+      },
+      {
+        path: 'popular',
+        element: <Popular />
+      },
+      {
+        path: 'now-playing',
+        element: <NowPlaying />
+      },
+      {
+        path: 'upcoming',
+        element: <Upcoming />
+      },
+      {
+        path: 'top-rated',
+        element: <TopRated />
+      }
+    ],
+  },
+]);
 
-}
-
-const Moni = () => {
-  return (
-    <>
-      <h2>MONI의 페이지입니다.</h2>
-    </>
-  )
-}
-
-const NotFound = () => <h2>404 Not Found</h2>;
-
+// 3. RouterProvider로 router 전달
 function App() {
-
-  return (
-    <>
-    <nav style={{display: "flex", gap: 12}}>
-      <Link to = "/">HOME</Link>
-      <Link to = "/moni">MONI</Link>
-      <Link to = "/not-exist">NOT-EXIST</Link>
-    </nav>
-    {/* Router 안에서 Route 선언 */}
-    <Router>
-      <Route path="/" component={Home} />
-      <Route path="/moni" component={Moni} />
-      <Route path="*" component={NotFound} />
-    </Router>
-    </>
-  )
+  return <RouterProvider router={router} />
 }
 
-export default App
+export default App;
