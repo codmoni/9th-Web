@@ -4,8 +4,14 @@ import Navbar from "../components/Navbar";
 const RootLayout = () => {
     return (
         <>
-            <Navbar />
-            <Outlet />
+        <div className="min-h-screen">
+            <header>
+                <Navbar />
+            </header>
+            <main className="max-w-6xl mx-auto px-4 py-8">
+                <Outlet />
+            </main>
+        </div>
         </>
     )
 }
