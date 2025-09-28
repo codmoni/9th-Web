@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Cast } from '../types/MovieDetail';
 
+// 배우 프로필 컴포넌트
 const CastProfile = ({ cast }: { cast: Cast }) => {
     return (
         <>

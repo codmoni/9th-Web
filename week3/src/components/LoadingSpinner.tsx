@@ -1,5 +1,6 @@
 import React from 'react';
 
+// 로딩 스피너 컴포넌트
 const LoadingSpinner = () => (
   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px' }}>
     <div style={{

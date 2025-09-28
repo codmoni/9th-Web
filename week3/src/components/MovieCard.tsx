@@ -7,6 +7,7 @@ type MovieCardProps = {
     posterPath: string | null;
 }
 
+// 영화 카드 컴포넌트
 const MovieCard = ({ movieId, title, overview, posterPath}: MovieCardProps) => {
     const navigate = useNavigate();
 
