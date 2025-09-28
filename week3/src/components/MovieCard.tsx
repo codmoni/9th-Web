@@ -1,13 +1,25 @@
+import { useNavigate } from "react-router-dom";
+
 type MovieCardProps = {
+    movieId: number;
     title: string;
     overview: string;
     posterPath: string | null;
 }
 
-const MovieCard = ({title, overview, posterPath}: MovieCardProps) => {
+const MovieCard = ({ movieId, title, overview, posterPath}: MovieCardProps) => {
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        navigate(`/detail/${movieId}`);
+    }
+
     return (
         <>
-        <div className="group relative overflow-hidden rounded-xl bg-white shadow transition hover:shadow-lg">
+        <div 
+            className="group relative overflow-hidden rounded-xl bg-white shadow transition hover:shadow-lg cursor-pointer"
+            onClick={handleClick}
+        >
             {posterPath && (
                 <img
                     src = {`https://image.tmdb.org/t/p/w200${posterPath}`}

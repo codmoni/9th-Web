@@ -45,6 +45,7 @@ const NowPlaying = () => {
             {movies?.map((movie) => (
                 <MovieCard
                     key = {movie.id}
+                    movieId = {movie.id}
                     title = {movie.title}
                     overview = {movie.overview}
                     posterPath = {movie.poster_path}

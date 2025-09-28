@@ -7,6 +7,7 @@ import Popular from './pages/Popular';
 import NowPlaying from './pages/NowPlaying';
 import Upcoming from './pages/Upcoming';
 import TopRated from './pages/TopRated';
+import MovieDetail from './pages/MovieDetail';
 
 // 2. 경로(path)와 보여줄 화면(element)를 정의
 const router = createBrowserRouter([
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: 'top-rated',
         element: <TopRated />
+      },
+      {
+        path: 'detail/:movieId',
+        element: <MovieDetail />
       }
     ],
   },
