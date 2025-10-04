@@ -5,7 +5,9 @@ import type { MovieDetailWithCredits } from '../types/MovieDetail';
 import type { Cast } from '../types/MovieDetail';
 import LoadingSpinner from '../components/LoadingSpinner';
 import CastProfile from '../components/CastProfile';
+import ErrorMessage from '../components/ErrorMessage';
 
+// 영화 상세 페이지
 const MovieDetail = () => {
     const { movieId } = useParams<{ movieId: string }>();
 
@@ -29,7 +31,7 @@ const MovieDetail = () => {
         }
     }, [data]);
 
-    if (error) return <p>에러 발생: {error.message}</p>
+    if (error) return <ErrorMessage message={error.message} />;
     if (loading) return <LoadingSpinner />;
 
     return (

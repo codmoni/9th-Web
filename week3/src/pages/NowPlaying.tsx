@@ -4,6 +4,7 @@ import useCustomFetch from "../hooks/useCustomFetch";
 import MovieCard from "../components/MovieCard";
 import LoadingSpinner from "../components/LoadingSpinner";
 import PageNavigator from "../components/PageNavigator";
+import ErrorMessage from "../components/ErrorMessage";
 
 // 상영 중인 영화 페이지
 const NowPlaying = () => {
@@ -29,7 +30,7 @@ const NowPlaying = () => {
         setPage(newPage);
     }
 
-    if (error) return <p>에러 발생: {error.message}</p>
+    if (error) return <ErrorMessage message={error.message} />;
     if (loading) return <LoadingSpinner />;
 
     return (
