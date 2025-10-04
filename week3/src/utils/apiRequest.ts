@@ -1,4 +1,4 @@
-import type { AxiosRequestConfig } from "axios";
+import type { AxiosRequestConfig, AxiosError } from "axios";
 import { api } from "../axios";
 
 export type ApiResponse<T>= {
@@ -6,7 +6,7 @@ export type ApiResponse<T>= {
     error: string | null;
 }
 
-export const request = async <T>(
+export const request = async <T,>(
     config: AxiosRequestConfig
     ) : Promise<ApiResponse<T>> => {
     try {
