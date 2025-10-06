@@ -3,6 +3,7 @@ import './App.css'
 import BaseLayout from './Layout/BaseLayout'
 import Home from './Pages/Home'
 import Login from './Pages/Login'
+import Signup from './Pages/Signup'
 
 const router = createBrowserRouter([
   {
@@ -16,14 +17,14 @@ const router = createBrowserRouter([
       },
       {
         path: "login",
-        element: <Login />,
+        element: <Login />
       },
       {
         path: "signup",
-        element: <div>회원가입 화면</div>,
+        element: <Signup />,
       }
     ]
-  },
+  }
 ])
 
 function App() {
