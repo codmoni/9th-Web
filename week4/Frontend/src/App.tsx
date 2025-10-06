@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './App.css'
 import BaseLayout from './Layout/BaseLayout'
+import Login from './Pages/Login'
 
 const router = createBrowserRouter([
   {
@@ -14,7 +15,7 @@ const router = createBrowserRouter([
       },
       {
         path: "login",
-        element: <div>로그인 화면</div>,
+        element: <Login />,
       },
       {
         path: "signup",
