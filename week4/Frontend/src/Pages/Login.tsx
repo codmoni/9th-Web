@@ -2,35 +2,55 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthInput from '../Components/forms/AuthInput';
 import SubmitButton from '../Components/buttons/SubmitButton';
+import GoogleLoginButton from '../Components/buttons/GoogleLoginButton';
 import useInputValidation from '../Hooks/useInputValidation';
 import { api } from '../axios';
-import clsx from 'clsx';
+import type { AxiosResponse } from 'axios';
+import type { LoginPayload, LoginResponse } from '../types/user';
 
-// 각 input의 유효성 검사 결과를 저장하는 객체 타입
-type InvalidMap = Record<string, boolean>;
+// 로그인 입력 필드 이름 (email, password만 허용)
+type LoginField = 'email' | 'password';
+
+// 각 입력 필드의 유효성 상태 저장
+//Partial : 모든 속성을 선택적(optional)으로 만듦
+type InvalidMap = Partial<Record<LoginField, boolean>>; 
 
 const Login = () => {
     const navigate = useNavigate();
 
-    const [formData, setFormData] = useState({ email: '', password: '' });
-    const [invalid, setInvalid] = useState<InvalidMap>({});
+    // 입력값 상태
+    const [formData, setFormData] = useState<Record<LoginField, string>>({ 
+        email: '', 
+        password: '' 
+    });
+    // 각 입력 필드의 유효성 검사 결과 저장(유효하지 않은 필드만 true로 기록)
+    const [invalid, setInvalid] = useState<InvalidMap>({}); 
 
+    // 버튼 비활성화 조건
     const isDisabled = Object.keys(invalid).length > 0 || !formData.email || !formData.password;
-
-    // 디버깅용
-    useEffect(() => {
-        console.log('invalid:', invalid);
-    }, [invalid]);
+    
+    // 타입 가드: name이 LoginField 타입인지 확인
+    const isLoginField = (n: string): n is LoginField =>
+        n === 'email' || n ==='password';
 
     // 실시간 유효성 검사
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
+
+        // name이 email이나 password가 아니면 무시
+        if(!isLoginField(name)) return; 
+
+        // 입력값 상태 업데이트
         setFormData(prev => ({ ...prev, [name]: value }));
-        const isValid = useInputValidation({ value, name }); // 커스텀 훅 사용
+
+        // 커스텀 유효성 검사 실행
+        const isValid = useInputValidation({ value, name }); 
+
+        // 유효성 검사 결과에 따라 invalid 상태 업데이트
         setInvalid(prev => {
             if(isValid) {
-                const { [name]: _, ...rest } = prev; // 유효하면 해당 필드 제거
-                return rest;
+                const { [name]: _, ...rest } = prev; 
+                return rest; // 유효하면 해당 필드 제거
             }
             else {
                 return { ...prev, [name]: true }; // 유효하지 않으면 추가
@@ -38,38 +58,50 @@ const Login = () => {
         });
     }
 
+    // FormData를 LoginPayload 형태로 변환
+    const toLoginPayload = (formData: FormData): LoginPayload => {
+        const email = String(formData.get('email') ?? '');
+        const password = String(formData.get('password') ?? '');
+        return { email, password };
+    }
+
     // 폼 제출 핸들러
+    // 1. 브라우저 기본 유효성 검사
+    // 2. 커스텀 훅 유효성 검사
+    // 3. 모두 통과 시 API 요청
     const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const form = e.currentTarget;
 
-        // 브라우저 기본 검사
+        // 1. 브라우저 기본 검사
         if(!form.checkValidity()) {
             form.reportValidity();
             return;
         }
 
-        // 커스텀 훅 검사
+        // 2. 커스텀 훅 검사
         const formData = new FormData(form); // 폼 데이터 수집
+        const fields: LoginField[] = ['email', 'password'];
         const nextInvalid: InvalidMap = {};
 
-        // 각 입력값에 대해 유효성 검사 실시
-        formData.forEach((value, key) => {
-            const isValid = useInputValidation({ value: String(value), name: String(key) }); // 커스텀 훅 사용
+        for (const key of fields) {
+            const value = String(formData.get(key) ?? '');
+            const isValid = useInputValidation({ value, name: key }); // 커스텀 훅 사용
             if (!isValid) nextInvalid[key] = true; // 유효하지 않으면 invalid 객체에 기록
-        })
+        }
 
         setInvalid(nextInvalid);
+        if (Object.keys(nextInvalid).length > 0) return; // 하나라도 invalid면 중단
 
-        // 모두 통과 시 api 요청 넣기
-        const payload = Object.fromEntries(formData.entries()); // 폼 데이터를 객체로 변환
-        console.log(payload);
-        // 로그인 요청 보내기
-        api.post('/auth/signin', payload, { withCredentials: true })
+        // 3. 모두 통과 시 api 요청 넣기
+        const payload = toLoginPayload(formData);
+        
+        api.post<LoginResponse, AxiosResponse<LoginResponse>, LoginPayload>(
+            '/auth/signin', payload
+        )
             .then(response => {
                 console.log('Login successful:', response.data);
-                const accessToken = response.data.accessToken;
-                const refreshToken = response.data.refreshToken;
+                const { accessToken, refreshToken } = response.data;
 
                 localStorage.setItem('accessToken', accessToken);
                 localStorage.setItem('refreshToken', refreshToken);
@@ -85,7 +117,7 @@ const Login = () => {
     return(
         <>
         <section className="mt-6">
-            {/* 헤더 */}
+            {/* Header */}
             <div className='mb-6 flex items-center justify-center relative'>
                 <button
                     type="button"
@@ -98,13 +130,7 @@ const Login = () => {
             </div>
 
             {/* Google Login */}
-            <button
-                type="button"
-                className="w-full h-11 rounded-md border border-white/40 text-white flex items-center justify-center gap-2 bg-transparent hover:bg-white/5 active:bg-white/10 transition"
-            >
-                <span className="text-base">G</span>
-                <span className="text-sm">Google로 로그인</span>
-            </button>
+            <GoogleLoginButton />
 
             {/* Divider */}
             <div className="my-5 flex items-center gap-2">
@@ -113,6 +139,7 @@ const Login = () => {
                 <span className="h-px flex-1 bg-white/25"/>
             </div>
 
+            {/* Login Form */}
             <form name="login-form" onSubmit={handleFormSubmit} noValidate>
                 <div className="space-y-4">
                     <AuthInput

@@ -33,7 +33,7 @@ const AuthInput = (
                     "bg-zinc-900 text-white placeholder-white/50",
                     "border",
                     showError ? "border-red-500" : "border-white/30",
-                    "focus:ring-2focus:ring-fuchsia-500 focus:border-fuchsia-500",
+                    "focus:ring-2 focus:ring-fuchsia-500 focus:border-fuchsia-500",
                     "transition"
                 )}
             />
