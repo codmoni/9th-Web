@@ -7,7 +7,9 @@ const BaseLayout = () => {
         <div className="min-h-screen w-screen bg-black text-white">
             <Header/>
             <main className="w-full px-4 pt-6 pb-16">
-                <Outlet />
+                <div className="mx-auto w-full max-w-[360px]">
+                    <Outlet />
+                </div>
             </main>
         </div>
         </>

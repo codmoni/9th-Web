@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './App.css'
 import BaseLayout from './Layout/BaseLayout'
+import Home from './Pages/Home'
 import Login from './Pages/Login'
 
 const router = createBrowserRouter([
@@ -11,7 +12,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <div>홈 화면</div>,
+        element: <Home />,
       },
       {
         path: "login",

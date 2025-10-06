@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import useInputValidation from '../../Hooks/useInputValidation';
+import clsx from 'clsx';
 
 type AuthInputProps = {
     id: string;
@@ -16,7 +16,7 @@ const AuthInput = (
     { id, name, type, value, placeholder, errorMessage, invalid, onChange }: AuthInputProps
 ) => {
 
-    const showError = invalid === true;
+    const showError = Boolean(invalid && errorMessage);
 
     return (
         <>
@@ -28,8 +28,18 @@ const AuthInput = (
                 placeholder={placeholder}
                 onChange={onChange}
                 required
+                className={clsx(
+                    "w-full h-10 rounded-md px-3 text-sm outline-none",
+                    "bg-zinc-900 text-white placeholder-white/50",
+                    "border",
+                    showError ? "border-red-500" : "border-white/30",
+                    "focus:ring-2focus:ring-fuchsia-500 focus:border-fuchsia-500",
+                    "transition"
+                )}
             />
-            {showError && errorMessage && <span>{errorMessage}</span>}
+            {showError && (
+                <span className="mt-1 block text-xs text-red-500">{errorMessage}</span>
+            )}
         </>
     )
 }
