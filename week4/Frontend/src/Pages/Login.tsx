@@ -7,19 +7,42 @@ import useInputValidation from '../Hooks/useInputValidation';
 type InvalidMap = Record<string, boolean>;
 
 const Login = () => {
+    const [formData, setFormData] = useState({ email: '', password: '' });
     const [invalid, setInvalid] = useState<InvalidMap>({});
+
+    // 디버깅용
+    useEffect(() => {
+        console.log('invalid:', invalid);
+    }, [invalid]);
+
+    // 실시간 유효성 검사
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+        const isValid = useInputValidation({ value, name }); // 커스텀 훅 사용
+        setInvalid(prev => {
+            if(isValid) {
+                const { [name]: _, ...rest } = prev; // 유효하면 해당 필드 제거
+                return rest;
+            }
+            else {
+                return { ...prev, [name]: true }; // 유효하지 않으면 추가
+            }
+        });
+    }
 
     // 폼 제출 핸들러
     const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const form = e.currentTarget;
 
-        // 기본 HTML5 유효성 검사
+        // 브라우저 기본 검사
         if(!form.checkValidity()) {
             form.reportValidity();
             return;
         }
 
+        // 커스텀 훅 검사
         const formData = new FormData(form); // 폼 데이터 수집
         const nextInvalid: InvalidMap = {};
 
@@ -39,27 +62,29 @@ const Login = () => {
 
     return(
         <>
-        <form name="login-form" onSubmit={handleFormSubmit}>
+        <form name="login-form" onSubmit={handleFormSubmit} noValidate>
             <AuthInput
                 id="email"
                 name="email"
                 type="email"
-                value=""
+                value={formData.email}
                 placeholder="이메일을 입력해주세요!"
                 errorMessage="올바른 이메일 형식을 입력해주세요."
                 invalid={!!invalid.email}
+                onChange={handleInputChange}
             />
             <br></br>
             <AuthInput
                 id="password"
                 name="password"
                 type="password"
-                value=""
+                value={formData.password}
                 placeholder="비밀번호를 입력해주세요!"
                 errorMessage="비밀번호는 6자 이상이어야 합니다."
                 invalid={!!invalid.password}
+                onChange={handleInputChange}
             />
-            <SubmitButton value="로그인" disabled={Object.keys(invalid).length > 0}/>
+            <SubmitButton value="로그인" disabled={Object.keys(invalid).length > 0 || !formData.email || !formData.password}/>
         </form>
         </>
     )
