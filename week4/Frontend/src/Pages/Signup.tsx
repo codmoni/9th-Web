@@ -48,8 +48,27 @@ const Signup = () => {
     }
 
     // 전체 제출 함수
-    const onSubmit = (data: any) => {
+    const onSubmit = async (data: any) => {
         console.log(data);
+        const payload: SignupPayload = {
+            email: data.email,
+            password: data.password,
+            name: data.name,
+            bio: null,
+            avatar: null,
+        };
+
+        api.post<SignupResponse, AxiosResponse<SignupResponse>, SignupPayload>(
+                '/auth/signup', payload
+            )
+                .then((response) => {
+                    console.log(response.data);
+                    navigate('/');
+                })
+                .catch((error) => {
+                    console.error('Signup error:', error);
+                    alert('회원가입 중 오류가 발생했습니다. 다시 시도해주세요.');
+                });
     };
 
     const renderStep = () => {
@@ -100,7 +119,17 @@ const Signup = () => {
                 return (
                     <>
                         <img src={profileSrc} alt="프로필"></img>
-                        <button type="button" onClick={onSubmit}>제출</button>
+                        <input
+                            id="name"
+                            type="text"
+                            placeholder="이름을 입력해주세요!"
+                            {...register("name", {
+                                required: "이름은 필수 입력 항목입니다.",
+                                maxLength: { value: 20, message: "이름은 최대 20자까지 가능합니다." }
+                            })}
+                        />
+                        {errors.name && <p>{errors.name.message}</p>}
+                        <button type="submit">제출</button>
                     </>
                 )
             default:

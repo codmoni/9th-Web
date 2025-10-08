@@ -5,8 +5,8 @@ export type User = {
     email: string;
     bio: string | null;
     avatar: string | null;
-    createdAt: string;
-    updatedAt: string;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 // 로그인 관련 DTO
