@@ -8,6 +8,8 @@ import GoogleLoginButton from "../Components/buttons/GoogleLoginButton";
 import { api } from "../axios";
 import type { AxiosResponse } from "axios";
 import type { SignupPayload, SignupResponse } from "../types/user";
+import { AuthInputStyle, AuthErrorMessageStyle } from "../Components/forms/AuthInput.style";
+import clsx from "clsx";
 
 const schema = z.object({
     email: z.string().email({ message: "올바른 이메일 형식을 입력해주세요." }),
@@ -24,10 +26,16 @@ const Signup = () => {
     const [signupStep, setSignupStep] = useState(1); // 1: 이메일, 2: 비밀번호, 3: 프로필
     const profileSrc = "/src/assets/profile-icon.png";
 
-    const { register, handleSubmit, formState: { errors }, trigger } = useForm({
+    type FormValues = z.infer<typeof schema>;
+
+    const { register, handleSubmit, formState: { errors, isValid, touchedFields, isSubmitted }, trigger, } = useForm<FormValues>({
         resolver: zodResolver(schema),
         mode: "onChange",
     });
+
+    const showError = <K extends keyof FormValues>(field: K) : boolean => {
+        return !!errors[field] && (touchedFields[field] || isSubmitted);
+    }
 
     // 단계 별 유효성 검증 실행 
     const goNextStep = async (step: number) => {
@@ -80,13 +88,14 @@ const Signup = () => {
                         id="email"
                         type="email"
                         placeholder="이메일을 입력해주세요!"
-                        {...register("email", {
-                            required: "이메일은 필수 입력 항목입니다.",
-                            pattern: { value: /\S+@\S+\.\S+/, message: "올바른 이메일 형식을 입력해주세요." }
-                        })}
+                        {...register("email")}
+                        className={clsx(
+                            AuthInputStyle,
+                            showError("email") ? "border-red-500" : "border-white/30"
+                        )}
                     />
-                    {errors.email && <p>{errors.email.message}</p>}
-                    <button type="button" onClick={() => goNextStep(1)}>다음</button>
+                    {showError("email") && <p className={AuthErrorMessageStyle}>{errors.email?.message}</p>}
+                    <SubmitButton value="다음" disabled={!isValid} onClick={() => goNextStep(1)} />
                     </>
                 )
             case 2:
@@ -96,23 +105,25 @@ const Signup = () => {
                         id="password"
                         type="password"
                         placeholder="비밀번호를 입력해주세요!"
-                        {...register("password", {
-                            required: "비밀번호는 필수 입력 항목입니다.",
-                            minLength: { value: 6, message: "비밀번호는 6자 이상이어야 합니다." }
-                        })}
+                        {...register("password")}
+                        className={clsx(
+                            AuthInputStyle,
+                            showError("password") ? "border-red-500" : "border-white/30"
+                        )}
                     />
-                    {errors.password && <p>{errors.password.message}</p>}
+                    {showError("password") && <p className={AuthErrorMessageStyle}>{errors.password?.message}</p>}
                     <input
                         id="checkPassword"
                         type="password"
                         placeholder="비밀번호를 다시 입력해주세요!"
-                        {...register("checkPassword", {
-                            required: "비밀번호 확인은 필수 입력 항목입니다.",
-                            minLength: { value: 6, message: "비밀번호 확인은 6자 이상이어야 합니다." }
-                        })}
+                        {...register("checkPassword")}
+                        className={clsx(
+                            AuthInputStyle,
+                            showError("checkPassword") ? "border-red-500" : "border-white/30"
+                        )}
                     />
-                    {errors.checkPassword && <p>{errors.checkPassword.message}</p>}
-                    <button type="button" onClick={() => goNextStep(2)}>다음</button>
+                    {showError("checkPassword") && <p className={AuthErrorMessageStyle}>{errors.checkPassword?.message}</p>}
+                    <SubmitButton value="다음" disabled={!isValid} onClick={() => goNextStep(2)} />
                     </>
                 )
             case 3:
@@ -123,13 +134,14 @@ const Signup = () => {
                             id="name"
                             type="text"
                             placeholder="이름을 입력해주세요!"
-                            {...register("name", {
-                                required: "이름은 필수 입력 항목입니다.",
-                                maxLength: { value: 20, message: "이름은 최대 20자까지 가능합니다." }
-                            })}
+                            {...register("name")}
+                            className={clsx(
+                                AuthInputStyle,
+                                showError("name") ? "border-red-500" : "border-white/30"
+                            )}
                         />
-                        {errors.name && <p>{errors.name.message}</p>}
-                        <button type="submit">제출</button>
+                        {showError("name") && <p className={AuthErrorMessageStyle}>{errors.name?.message}</p>}
+                        <SubmitButton value="제출" disabled={!isValid} />
                     </>
                 )
             default:
