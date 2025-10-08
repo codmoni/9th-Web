@@ -1,18 +1,19 @@
 import clsx from "clsx";
 
 type SubmitButtonProps = {
+    type?: "button" | "submit";
     value: string;
     disabled?: boolean;
     onClick?: () => void;
 }
 
 // 제출 버튼 
-const SubmitButton = ({ value, disabled, onClick }: SubmitButtonProps) => {
+const SubmitButton = ({ type="submit", value, disabled, onClick }: SubmitButtonProps) => {
 
     return(
         <>
         <button
-            type="submit"
+            type={type}
             disabled={disabled}
             className={clsx(
                 "w-full h-11 rounded-md text-sm font-semibold transition-colors duration-200",

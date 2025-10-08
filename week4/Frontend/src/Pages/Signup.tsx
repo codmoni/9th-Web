@@ -11,6 +11,7 @@ import type { SignupPayload, SignupResponse } from "../types/user";
 import { AuthInputStyle, AuthErrorMessageStyle } from "../Components/forms/AuthInput.style";
 import clsx from "clsx";
 
+// schema 정의
 const schema = z.object({
     email: z.string().email({ message: "올바른 이메일 형식을 입력해주세요." }),
     password: z.string().min(6, { message: "비밀번호는 6자 이상이어야 합니다." }),
@@ -24,35 +25,66 @@ const schema = z.object({
 const Signup = () => {
     const navigate = useNavigate();
     const [signupStep, setSignupStep] = useState(1); // 1: 이메일, 2: 비밀번호, 3: 프로필
+    const [isStepValid, setIsStepValid] = useState(false); // 현재 단계 유효성 검사 상태
     const profileSrc = "/src/assets/profile-icon.png";
 
     type FormValues = z.infer<typeof schema>;
 
-    const { register, handleSubmit, formState: { errors, isValid, touchedFields, isSubmitted }, trigger, } = useForm<FormValues>({
+    // react-hook-form
+    const { register, handleSubmit, formState: { errors, isValid, touchedFields, isSubmitted }, trigger, watch } = useForm<FormValues>({
         resolver: zodResolver(schema),
         mode: "onChange",
     });
 
+    // watch로 입력값 감시
+    const email = watch("email");
+    const password = watch("password");
+    const checkPassword = watch("checkPassword");
+    const name = watch("name");
+
+    // 에러 메시지 표시 조건
     const showError = <K extends keyof FormValues>(field: K) : boolean => {
         return !!errors[field] && (touchedFields[field] || isSubmitted);
     }
 
+    // 현재 단계 유효성 검사
+    // watch로 감시 중인 값일 바뀔 때마다 렌더링 중 자동으로 평가
+    // 사용자가 타이핑하는 도중에, "다음" 버튼 활성화/비활성화 결정하기 위함
+    const getCurrentStepValidity = () : boolean => {
+        switch(signupStep) {
+            case 1:
+                return !errors.email && !!email;
+            case 2:
+                return !errors.password && !errors.checkPassword && !!password && !!checkPassword;
+            case 3:
+                return !errors.name && !!name;
+            default:
+                return false;
+        }
+    }
+
+    const isCurrentStepValid = getCurrentStepValidity();
+
+
     // 단계 별 유효성 검증 실행 
+    // 사용자가 "다음" 버튼 클릭 시 해당 단계의 필드에 대해 trigger로 유효성 검사 실행
     const goNextStep = async (step: number) => {
-        let ok;
+        let ok: boolean;
         switch (step) {
             case 1:
                 ok = await trigger("email");
-                if (ok) setSignupStep((prev) => prev + 1);
                 break;
             case 2:
-                ok = await trigger("password");
-                ok = ok && await trigger("checkPassword");
-                if (ok) setSignupStep((prev) => prev + 1);
+                ok = await trigger(["password", "checkPassword"]);
+                break;
+            case 3:
+                ok = await trigger("name");
                 break;
             default:
-                break;
+                return;
         }
+
+        if (ok) setSignupStep(prev => prev + 1);
     }
 
     // 전체 제출 함수
@@ -79,6 +111,7 @@ const Signup = () => {
                 });
     };
 
+    // 단계 별 렌더링
     const renderStep = () => {
         switch(signupStep) {
             case 1:
@@ -95,7 +128,7 @@ const Signup = () => {
                         )}
                     />
                     {showError("email") && <p className={AuthErrorMessageStyle}>{errors.email?.message}</p>}
-                    <SubmitButton value="다음" disabled={!isValid} onClick={() => goNextStep(1)} />
+                    <SubmitButton type="button" value="다음" disabled={!isCurrentStepValid} onClick={() => goNextStep(1)} />
                     </>
                 )
             case 2:
@@ -123,7 +156,7 @@ const Signup = () => {
                         )}
                     />
                     {showError("checkPassword") && <p className={AuthErrorMessageStyle}>{errors.checkPassword?.message}</p>}
-                    <SubmitButton value="다음" disabled={!isValid} onClick={() => goNextStep(2)} />
+                    <SubmitButton type="button" value="다음" disabled={!isCurrentStepValid} onClick={() => goNextStep(2)} />
                     </>
                 )
             case 3:
