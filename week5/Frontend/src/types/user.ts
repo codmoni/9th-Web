@@ -3,10 +3,10 @@ export type User = {
     id: number;
     name: string;
     email: string;
-    bio: string | null;
-    avatar: string | null;
-    createdAt: Date;
-    updatedAt: Date;
+    bio?: string;
+    avatar?: string;
+    createdAt: Date | string;
+    updatedAt: Date | string;
 }
 
 // 로그인 관련 DTO
@@ -29,11 +29,18 @@ export type LoginResponse = {
 export type SignupPayload = {
     name: string;
     email: string;
-    bio: string | null;
-    avatar: string | null;
+    bio?: string;
+    avatar?: string;
     password: string;
 }
 
 // (2) response
 export type SignupResponse = User;
 
+// 토큰 재발급 관련 DTO
+export type RefreshTokenResponse = {
+    id: number;
+    name: string;
+    accessToken: string;
+    refreshToken: string;
+}

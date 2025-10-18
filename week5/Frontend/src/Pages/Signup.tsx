@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import z from "zod/v3";
 import SubmitButton from "../Components/buttons/SubmitButton";
 import GoogleLoginButton from "../Components/buttons/GoogleLoginButton";
-import { api } from "../shared/axios";
+import { apiPublic } from "../shared/axios";
 import type { AxiosResponse } from "axios";
 import type { SignupPayload, SignupResponse } from "../types/user";
 import { AuthInputStyle, AuthErrorMessageStyle } from "../Components/forms/AuthInput.style";
@@ -93,11 +93,9 @@ const Signup = () => {
             email: data.email,
             password: data.password,
             name: data.name,
-            bio: null,
-            avatar: null,
         };
 
-        api.post<SignupResponse, AxiosResponse<SignupResponse>, SignupPayload>(
+        apiPublic.post<SignupResponse, AxiosResponse<SignupResponse>, SignupPayload>(
                 '/auth/signup', payload
             )
                 .then((response) => {

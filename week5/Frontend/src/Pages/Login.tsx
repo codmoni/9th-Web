@@ -4,9 +4,8 @@ import AuthInput from '../Components/forms/AuthInput';
 import SubmitButton from '../Components/buttons/SubmitButton';
 import GoogleLoginButton from '../Components/buttons/GoogleLoginButton';
 import useInputValidation from '../Hooks/useInputValidation';
-import { api } from '../shared/axios';
-import type { AxiosResponse } from 'axios';
-import type { LoginPayload, LoginResponse } from '../types/user';
+import type { LoginPayload } from '../types/user';
+import { login } from '../apis/auth/login';
 
 // 로그인 입력 필드 이름 (email, password만 허용)
 type LoginField = 'email' | 'password';
@@ -96,22 +95,9 @@ const Login = () => {
         // 3. 모두 통과 시 api 요청 넣기
         const payload = toLoginPayload(formData);
         
-        api.post<LoginResponse, AxiosResponse<LoginResponse>, LoginPayload>(
-            '/auth/signin', payload
-        )
-            .then(response => {
-                console.log('Login successful:', response.data);
-                const { accessToken, refreshToken } = response.data;
-
-                localStorage.setItem('accessToken', accessToken);
-                localStorage.setItem('refreshToken', refreshToken);
-
-                navigate('/'); 
-            })
-            .catch(error => {
-                console.error('Login failed:', error);
-                alert('로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.');
-            });
+        login(payload)
+            .then(() => navigate('/'))
+            .catch(() => {}); // 에러는 login 함수 내에서 처리
     }
 
     return(

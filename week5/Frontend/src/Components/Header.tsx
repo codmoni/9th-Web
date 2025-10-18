@@ -3,7 +3,7 @@ import clsx from "clsx";
 
 const Header = () => {
     const location = useLocation();
-    console.log(location);
+    // console.log(location);
 
     const isLogin = location.pathname === '/login';
     const isSignUp = location.pathname === '/signup';
