@@ -5,9 +5,8 @@ import { useForm } from "react-hook-form";
 import z from "zod/v3";
 import SubmitButton from "../Components/buttons/SubmitButton";
 import GoogleLoginButton from "../Components/buttons/GoogleLoginButton";
-import { apiPublic } from "../shared/axios";
-import type { AxiosResponse } from "axios";
-import type { SignupPayload, SignupResponse } from "../types/user";
+import { signup } from "../apis/auth/signup";
+import type { SignupPayload } from "../types/user";
 import { AuthInputStyle, AuthErrorMessageStyle } from "../Components/forms/AuthInput.style";
 import clsx from "clsx";
 
@@ -95,17 +94,10 @@ const Signup = () => {
             name: data.name,
         };
 
-        apiPublic.post<SignupResponse, AxiosResponse<SignupResponse>, SignupPayload>(
-                '/auth/signup', payload
-            )
-                .then((response) => {
-                    console.log(response.data);
-                    navigate('/');
-                })
-                .catch((error) => {
-                    console.error('Signup error:', error);
-                    alert('회원가입 중 오류가 발생했습니다. 다시 시도해주세요.');
-                });
+        signup(payload)
+            .then((res) => {
+                navigate('/');
+            })
     };
 
     // 단계 별 렌더링

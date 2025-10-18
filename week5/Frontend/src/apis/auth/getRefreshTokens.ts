@@ -1,6 +1,6 @@
 import type { ApiResponse } from "../../types/ApiResponse";
-import { handleApiError } from "../../shared/handleApiError";
-import { apiPublic } from "../../shared/axios";
+import { handleApiError } from "../../shared/apiConfig/handleApiError";
+import { apiPublic } from "../../shared/apiConfig/axios";
 import type { RefreshTokenResponse } from "../../types/user";
 
 export const getRefreshTokens = async (refresh: string): Promise<RefreshTokenResponse> => {

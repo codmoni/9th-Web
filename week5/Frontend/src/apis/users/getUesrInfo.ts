@@ -1,6 +1,6 @@
 import type { ApiResponse } from "../../types/ApiResponse";
-import { handleApiError } from "../../shared/handleApiError";
-import { apiPrivate } from "../../shared/axios";
+import { handleApiError } from "../../shared/apiConfig/handleApiError";
+import { apiPrivate } from "../../shared/apiConfig/axios";
 import type { User } from "../../types/user";
 
 export const getUserInfo = async (): Promise<User> => {

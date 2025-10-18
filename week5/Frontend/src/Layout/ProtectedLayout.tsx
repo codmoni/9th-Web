@@ -1,5 +1,5 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { authStorage } from "../shared/authStorage";
+import { authStorage } from "../shared/apiConfig/authStorage";
 
 const ProtectedLayout = () => {
     const location = useLocation();
