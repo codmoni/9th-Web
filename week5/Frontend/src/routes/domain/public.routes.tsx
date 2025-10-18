@@ -6,6 +6,7 @@ const HomePage = lazy(() => import("../../Pages/Home"));
 const LoginPage = lazy(() => import("../../Pages/Login"));
 const SignupPage = lazy(() => import("../../Pages/Signup"));
 
+// 공개 라우트 정의
 export const publicRoutes: RouteObject[] = [
     {
         index: true,

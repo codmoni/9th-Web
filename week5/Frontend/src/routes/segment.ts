@@ -1,3 +1,4 @@
+// 경로 세그먼트 정의
 export const SEG = {
     ROOT: "/",
     
@@ -5,9 +6,9 @@ export const SEG = {
     SIGNUP: "/signup",
 
     PROFILE: {
-        VIEW: "/profile",
-        EDIT: "/profile/edit",
-        DELETE: "/profile/delete",
+        ROOT: "/profile",
+        EDIT: "/edit",
+        DELETE: "/delete",
     }
 } as const;
 
