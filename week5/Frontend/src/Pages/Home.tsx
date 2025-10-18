@@ -1,10 +1,11 @@
+import { authStorage } from "../shared/apiConfig/authStorage";
+
 const Home = () => {
-    const isLoginedIn = Boolean(localStorage.getItem('accessToken'));
-    console.log('isLoginedIn:', isLoginedIn);
+    const isLoginedIn = authStorage.isAuthenticated();
+    // console.log('isLoginedIn:', isLoginedIn);
 
     const logout = () => {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
+        authStorage.logout();
         window.location.reload(); // 페이지 새로고침
     }
 
