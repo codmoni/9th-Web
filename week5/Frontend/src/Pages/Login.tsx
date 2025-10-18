@@ -4,7 +4,7 @@ import AuthInput from '../Components/forms/AuthInput';
 import SubmitButton from '../Components/buttons/SubmitButton';
 import GoogleLoginButton from '../Components/buttons/GoogleLoginButton';
 import useInputValidation from '../Hooks/useInputValidation';
-import { api } from '../axios';
+import { api } from '../shared/axios';
 import type { AxiosResponse } from 'axios';
 import type { LoginPayload, LoginResponse } from '../types/user';
 

@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import z from "zod/v3";
 import SubmitButton from "../Components/buttons/SubmitButton";
 import GoogleLoginButton from "../Components/buttons/GoogleLoginButton";
-import { api } from "../axios";
+import { api } from "../shared/axios";
 import type { AxiosResponse } from "axios";
 import type { SignupPayload, SignupResponse } from "../types/user";
 import { AuthInputStyle, AuthErrorMessageStyle } from "../Components/forms/AuthInput.style";
