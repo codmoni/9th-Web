@@ -5,6 +5,8 @@ export const PATH = {
     login: () => '/login',
     signup: () => '/signup',
 
+    oauth: () => '/v1/auth/google/callback',
+
     profile: {
         view: () => '/profile',
         edit: () => '/profile/edit',

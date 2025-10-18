@@ -5,6 +5,10 @@ export const SEG = {
     LOGIN: "/login",
     SIGNUP: "/signup",
 
+    OAUTH: {
+        GOOGLE: "/v1/auth/google/callback",
+    },
+
     PROFILE: {
         ROOT: "/profile",
         EDIT: "/edit",
