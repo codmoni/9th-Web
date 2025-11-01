@@ -1,7 +1,5 @@
 @import 'tailwindcss';
 @import "tailwindcss/preflight" layer(base);
-@import "tailwindcss/components" layer(components);
-@import "tailwindcss/utilities" layer(utilities);
 
 @layer base {
   html {
