@@ -7,10 +7,10 @@ const BaseLayout = () => {
         <>
         <Suspense fallback={<div>Loading...</div>}>
             <ScrollRestoration />
-            <div className="min-h-screen w-screen bg-layout-bg">
+            <div className="min-h-screen w-screen">
                 <Header/>
-                <main className="w-full px-4 pt-6 pb-16">
-                    <Outlet />
+                <main className="w-full">
+                    <Outlet/>
                 </main>
             </div>
         </Suspense>

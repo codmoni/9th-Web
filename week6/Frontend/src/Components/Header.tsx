@@ -2,6 +2,7 @@ import { NavLink, Link, useLocation } from "react-router-dom";
 import { authStorage } from "../shared/apiConfig/authStorage";
 import clsx from "clsx";
 import { logout } from "../apis/auth/logout";
+import { HamburgerIcon } from "../assets/svg";
 
 const Header = () => {
     const location = useLocation();
@@ -27,13 +28,14 @@ const Header = () => {
 
     return (
         <>
-        <header className="sticky top-0 z-40 w-full border-b border-zinc-800 bg-black/90">
+        <header className="sticky top-0 z-40 w-full">
             <div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
+                <HamburgerIcon className="h-6 w-6 text-white"/>
                 <Link 
                     to="/"
-                    className="text-lg font-extrabold"
+                    className="text-lg font-extrabold text-pink-500"
                 >
-                    돌려돌려LP판
+                    DOLIGO
                 </Link>
                 <nav className="space-x-2">
                     {!isAuthenticated 
