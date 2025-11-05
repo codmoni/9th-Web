@@ -1,4 +1,4 @@
-// 도메인 모델
+// User Type Definitions
 export type User = {
     id: number;
     name: string;

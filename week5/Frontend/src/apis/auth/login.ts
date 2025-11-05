@@ -1,8 +1,5 @@
-import type { ApiResponse } from "../../types/ApiResponse";
-import { handleApiError } from "../../shared/apiConfig/handleApiError";
-import { apiPublic } from "../../shared/apiConfig/axios";
+import { type ApiResponse, handleApiError, apiPublic, authStorage } from "../../shared/apiConfig/apiExport";
 import type { LoginPayload, LoginResponse } from "../../types/user";
-import { authStorage } from "../../shared/apiConfig/authStorage";
 
 export const login = async (payload: LoginPayload): Promise<LoginResponse> => {
     try {

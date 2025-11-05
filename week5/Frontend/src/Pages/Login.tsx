@@ -97,7 +97,6 @@ const Login = () => {
         
         login(payload)
             .then(() => navigate('/'))
-            .catch(() => {}); // 에러는 login 함수 내에서 처리
     }
 
     return(

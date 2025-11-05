@@ -3,12 +3,13 @@ import { authStorage } from "../shared/apiConfig/authStorage";
 import clsx from "clsx";
 import { logout } from "../apis/auth/logout";
 import { HamburgerIcon } from "../assets/svg";
+import { useContext } from "react";
+import { SidebarContext } from "../Hooks/SidebarProvider";
 
 const Header = () => {
     const location = useLocation();
-    // console.log(location);
-
     const isAuthenticated = authStorage.isAuthenticated();
+    const sidebarContext = useContext(SidebarContext);
 
     const isLogin = location.pathname === '/login';
     const isSignUp = location.pathname === '/signup';
@@ -30,13 +31,20 @@ const Header = () => {
         <>
         <header className="sticky top-0 z-40 w-full">
             <div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
-                <HamburgerIcon className="h-6 w-6 text-white"/>
-                <Link 
-                    to="/"
-                    className="text-lg font-extrabold text-pink-500"
-                >
-                    DOLIGO
-                </Link>
+                <div className="flex gap-4">
+                    <button onClick={sidebarContext?.toggleSidebar}>
+                        <HamburgerIcon className="h-6 w-6 text-zinc-200 cursor-pointer"/>
+                    </button>
+
+                    {/* LOGO */}
+                    <Link 
+                        to="/"
+                        className="text-lg font-extrabold text-pink-500"
+                    >
+                        DOLIGO
+                    </Link>
+                </div>
+
                 <nav className="space-x-2">
                     {!isAuthenticated 
                         ? (

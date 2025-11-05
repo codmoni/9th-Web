@@ -2,7 +2,7 @@ import axios from "axios";
 import { authStorage } from "./authStorage";
 import { isTokenExpired, refreshToken } from "./tokenUtils";
 
-const baseURL = import.meta.env.VITE_APP_API_URL;
+export const baseURL = import.meta.env.VITE_APP_API_URL;
 
 // public axios instance
 export const apiPublic = axios.create({

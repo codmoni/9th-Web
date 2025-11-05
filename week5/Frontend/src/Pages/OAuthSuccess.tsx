@@ -22,7 +22,7 @@ const OAuthSuccess = () => {
             navigate('/');
         } else {
             console.error("Access token or refresh token is missing.");
-            navigate('/login');
+            navigate('/login'); 
         }
     }, []);
 

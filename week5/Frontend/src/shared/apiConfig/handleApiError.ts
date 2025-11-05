@@ -1,3 +1,4 @@
+// handle API errors and display appropriate messages
 export const handleApiError = (error: any) => {
     // 표준 응답
     if (error?.response?.data?.message) {

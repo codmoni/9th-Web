@@ -1,4 +1,5 @@
 export const authStorage = {
+    // get or set token in localStorage
     getToken: (type: 'access' | 'refresh') => {
         const token = localStorage.getItem(`${type}Token`);
 
@@ -16,10 +17,12 @@ export const authStorage = {
             localStorage.removeItem(`${type}Token`);
         }
     },
+    // check if user is authenticated
     isAuthenticated: (): boolean => {
         const token = authStorage.getToken('access');
         return !!token;
     },
+    // logout user
     logout: () => {
         authStorage.setToken('access', null);
         authStorage.setToken('refresh', null);
