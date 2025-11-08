@@ -13,6 +13,11 @@ export const SEG = {
         ROOT: "/profile",
         EDIT: "/edit",
         DELETE: "/delete",
+    },
+
+    MUSIC: {
+        ROOT: "/music",
+        ID: "/:id", // Dynamic segment for music ID
     }
 } as const;
 
