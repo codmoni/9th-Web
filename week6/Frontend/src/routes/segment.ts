@@ -11,8 +11,8 @@ export const SEG = {
 
     PROFILE: {
         ROOT: "/profile",
-        EDIT: "/edit",
-        DELETE: "/delete",
+        EDIT: "edit",
+        DELETE: "delete",
     },
 
     MUSIC: {
