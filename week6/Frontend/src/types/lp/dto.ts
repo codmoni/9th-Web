@@ -1,4 +1,4 @@
-import type { LPTag, LPLike, LPAuthor, LPPost } from '../lp/domain';
+import type { LPAuthor, LPPost } from '../lp/domain';
 
 // Default: LP 목록 조회 요청 DTO 
 export type GetLPsPayload = {
@@ -16,9 +16,7 @@ export type LPsResponse = {
 }
 
 // Req DTO: 특정 유저가 생성한 LP 목록 조회
-export type GetLpsPayloadByUser = GetLPsPayload & {
-    userId: number;
-}
+export type GetLpsPayloadByUser = GetLPsPayload
 
 // Res DTO: 특정 유저가 생성한 LP 목록 조회
 export type LPsResponseByUser = LPsResponse;
@@ -30,9 +28,7 @@ export type GetMyLpsPayload = GetLPsPayload;
 export type MyLPsResponse = LPsResponse;
 
 // Req DTO: 특정 태그 관련 LP 목록 조회
-export type GetLpsPayloadByTag = GetLPsPayload & {
-    tagName: string;
-}
+export type GetLpsPayloadByTag = GetLPsPayload;
 
 // Res DTO: 특정 태그 관련 LP 목록 조회
 export type LPsResponseByTag = LPsResponse;
@@ -60,8 +56,3 @@ export type UpdateLPPayload = Partial<CreateLPPayload>;
 
 // Res DTO: LP 수정 응답
 export type UpdateLPResponse = Partial<CreateLPResponse>;
-
-// Req DTO: LP 삭제 요청
-export type DeleteLPPayload = {
-    lpId: number;
-}
