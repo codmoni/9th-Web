@@ -15,6 +15,6 @@ export const PATH = {
 
     music: {
         list: () => '/music',
-        detail: (id: string | number) => `/music/${id}`,
+        detail: (lpId: number) => `/music/${lpId}`,
     }
 } as const;

@@ -1,13 +1,20 @@
 import { useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { lpKeys } from "../../apis/lps/keys";
-import { getLps, getLpsByUser, getMyLps, getLpsByTag, getLpDetail } from "../../apis/lps/queries";
+import { useLPList } from "../../apis/lps/caching/queryHooks";
+import { useNavigate } from "react-router-dom";
 
 const Musics = () => {
-    const { data, isPending, isError, error, isFetching, refetch } = useQuery({
-        queryKey: lpKeys.list(),
-        queryFn: getLps
-    });
+    const navigate = useNavigate();
+    const { data, isPending, isError, error, isFetching, refetch } = useLPList();
+
+    useEffect(() => {
+        refetch();
+    }, [refetch]);
+
+    const showLPDetail = (lpId: number) => {
+        if (!isFetching && lpId) {
+            navigate(`/music/${lpId}`);
+        }
+    }
 
     return (
         <>
@@ -17,7 +24,12 @@ const Musics = () => {
             {data && (
                 <ul>
                     {data.data.map((music) => (
-                        <li key={music.id}>{music.title}</li>
+                        <li 
+                            key={music.id}
+                            onClick={() => showLPDetail(music.id)}
+                        >
+                            {music.title}
+                        </li>
                     ))}
                 </ul>
             )}

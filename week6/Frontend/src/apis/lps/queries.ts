@@ -1,23 +1,23 @@
 import { type ApiResponse, handleApiError, apiPrivate } from "../../shared/apiConfig/apiExport";
 import type { 
-    GetLpsPayload, LPsResponse, // Default DTOs
-    GetLpsPayloadByUser, LPsResponseByUser,  // User-specific DTOs
-    GetMyLpsPayload, MyLPsResponse,  // My LPs DTOs
-    GetLpsPayloadByTag, LPsResponseByTag,  // Tag-specific DTOs
+    GetLPsPayload, LPsResponse, // Default DTOs
+    GetLPsPayloadByUser, LPsResponseByUser,  // User-specific DTOs
+    GetMyLPsPayload, MyLPsResponse,  // My LPs DTOs
+    GetLPsPayloadByTag, LPsResponseByTag,  // Tag-specific DTOs
     LPDetailResponse  // LP Detail DTO
 } from "../../types/lp/DTO";
 
 // [LP 생성, 수정, 삭제 api]
 
 // Default : LP 목록 조회
-export const getLps = async (payload: GetLpsPayload): Promise<LPsResponse> => {
+export const getLPs = async (payload: GetLPsPayload): Promise<LPsResponse> => {
     try {
         const { data } = await apiPrivate.get<ApiResponse<LPsResponse>>(
             '/lps'
             , { params: payload }
         );
 
-        console.log('getLps api response:', data);
+        console.log('getLPs api response:', data);
 
         if (!data.status || !data.data) {
             throw new Error(data.message);
@@ -31,13 +31,13 @@ export const getLps = async (payload: GetLpsPayload): Promise<LPsResponse> => {
 }
 
 // 특정 유저가 생성한 LP 목록 조회
-export const getLpsByUser = async (userId:number, payload: GetLpsPayloadByUser): Promise<LPsResponseByUser> => {
+export const getLPsByUser = async (userId:number, payload: GetLPsPayloadByUser): Promise<LPsResponseByUser> => {
     try {
         const { data } = await apiPrivate.get<ApiResponse<LPsResponseByUser>>(
             `/lps/user/${userId}`
             , { params: payload }
         );
-        console.log('getLpsByUser api response:', data);
+        console.log('getLPsByUser api response:', data);
 
         if (!data.status || !data.data) {
             throw new Error(data.message);
@@ -50,13 +50,13 @@ export const getLpsByUser = async (userId:number, payload: GetLpsPayloadByUser):
 }
 
 // 내가 생성한 LP 목록 조회
-export const getMyLps = async (payload: GetMyLpsPayload): Promise<MyLPsResponse> => {
+export const getMyLPs = async (payload: GetMyLPsPayload): Promise<MyLPsResponse> => {
     try {
         const { data } = await apiPrivate.get<ApiResponse<MyLPsResponse>>(
             '/lps/user'
             , { params: payload }
         );
-        console.log('getMyLps api response:', data);
+        console.log('getMyLPs api response:', data);
         if (!data.status || !data.data) {
             throw new Error(data.message);
         }
@@ -68,13 +68,13 @@ export const getMyLps = async (payload: GetMyLpsPayload): Promise<MyLPsResponse>
 }
 
 // 특정 태그 관련 LP 목록 조회
-export const getLpsByTag = async (tagName:string, payload: GetLpsPayloadByTag): Promise<LPsResponseByTag> => {
+export const getLPsByTag = async (tagName:string, payload: GetLPsPayloadByTag): Promise<LPsResponseByTag> => {
     try {
         const { data } = await apiPrivate.get<ApiResponse<LPsResponseByTag>>(
             `/tags/${encodeURIComponent(tagName)}/lps`
             , { params: payload }
         );
-        console.log('getLpsByTag api response:', data);
+        console.log('getLPsByTag api response:', data);
         if (!data.status || !data.data) {
             throw new Error(data.message);
         }
@@ -86,12 +86,12 @@ export const getLpsByTag = async (tagName:string, payload: GetLpsPayloadByTag): 
 }
 
 // LP 상세 조회
-export const getLpDetail = async (lpId: number): Promise<LPDetailResponse> => {
+export const getLPDetail = async (lpId: number): Promise<LPDetailResponse> => {
     try {
         const { data } = await apiPrivate.get<ApiResponse<LPDetailResponse>>(
             `/lps/${lpId}`
         );  
-        console.log('getLpDetail api response:', data);
+        console.log('getLPDetail api response:', data);
 
         if (!data.status || !data.data) {
             throw new Error(data.message);

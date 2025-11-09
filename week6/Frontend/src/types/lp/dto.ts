@@ -16,25 +16,25 @@ export type LPsResponse = {
 }
 
 // Req DTO: 특정 유저가 생성한 LP 목록 조회
-export type GetLpsPayloadByUser = GetLPsPayload
+export type GetLPsPayloadByUser = GetLPsPayload
 
 // Res DTO: 특정 유저가 생성한 LP 목록 조회
 export type LPsResponseByUser = LPsResponse;
 
 // Req DTO: 내가 생성한 LP 목록 조회
-export type GetMyLpsPayload = GetLPsPayload;
+export type GetMyLPsPayload = GetLPsPayload;
 
 // Res DTO: 내가 생성한 LP 목록 조회
 export type MyLPsResponse = LPsResponse;
 
 // Req DTO: 특정 태그 관련 LP 목록 조회
-export type GetLpsPayloadByTag = GetLPsPayload;
+export type GetLPsPayloadByTag = GetLPsPayload;
 
 // Res DTO: 특정 태그 관련 LP 목록 조회
 export type LPsResponseByTag = LPsResponse;
 
 // Res DTO: LP 상세 조회
-export type LPDetailResponse = LPsResponse & {
+export type LPDetailResponse = LPPost & {
     author: LPAuthor;
 }
 

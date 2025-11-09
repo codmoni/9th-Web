@@ -2,7 +2,7 @@ import { type ApiResponse, handleApiError, apiPrivate } from "../../shared/apiCo
 import type { 
     CreateLPPayload, CreateLPResponse,
     UpdateLPPayload, UpdateLPResponse,
-} from "../../types/lp/DTO";
+} from "../../types/lp/dto";
 
 // [LP 조회 전용 api]
 
