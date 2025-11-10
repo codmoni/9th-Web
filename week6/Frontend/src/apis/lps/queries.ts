@@ -5,7 +5,7 @@ import type {
     GetMyLPsPayload, MyLPsResponse,  // My LPs DTOs
     GetLPsPayloadByTag, LPsResponseByTag,  // Tag-specific DTOs
     LPDetailResponse  // LP Detail DTO
-} from "../../types/lp/DTO";
+} from "../../types/lp/dto";
 
 // [LP 생성, 수정, 삭제 api]
 

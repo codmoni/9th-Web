@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
 import { lpKeys } from "./keys";
 import {
     getLPs, getLPDetail
@@ -7,7 +7,7 @@ import type {
     GetLPsPayload,
     LPDetailResponse,
     LPsResponse,
-} from "../../../types/lp/DTO";
+} from "../../../types/lp/dto";
 
 // Default: LP 목록 조회
 export function useLPList(params?: GetLPsPayload) {
@@ -29,4 +29,17 @@ export function useLPDetail(lpId: number) {
         gcTime: 10 * 60 * 1000, // 10 minutes
         enabled: !!lpId,
     });
+}
+
+// useInfinite Query for LP 목록 조회
+export function useInfiniteLPList(params?: Omit<GetLPsPayload, 'cursor'>) {
+    return useInfiniteQuery<LPsResponse>({
+        queryKey: lpKeys.infiniteList(params),
+        queryFn: ({ pageParam }) => getLPs({ ...params, cursor: pageParam as number }),
+        initialPageParam: 0,
+        getNextPageParam: (lastPage) => lastPage.hasNext ? lastPage.nextCursor?? undefined : undefined,
+        staleTime: 5 * 60 * 1000, // 5 minutes
+        gcTime: 10 * 60 * 1000, // 10 minutes
+        enabled: true,
+    })
 }
