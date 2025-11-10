@@ -1,43 +1,37 @@
 import { useEffect, useState } from "react";
-import { useLPList } from "../../apis/lps/caching/queryHooks";
 import { useNavigate } from "react-router-dom";
+import { useLPList } from "../../apis/lps/caching/queryHooks";
 import MusicCard from "../../Components/MusicCard";
+import SortToggle from "../../Components/buttons/SortToggle";
 
 const Musics = () => {
     const navigate = useNavigate();
-    const { data: musics, isPending, isError, error, isFetching, refetch } = useLPList();
+    const [order, setOrder] = useState<"asc" | "desc">("asc");
 
-    useEffect(() => {
-        refetch();
-    }, [refetch]);
-
+    const { 
+        data: musics, 
+        isPending, 
+        isError, 
+        error, 
+        isFetching
+     } = useLPList({cursor: 0, limit: 15, order});
+    
     const showLPDetail = (lpId: number) => {
-        if (!isFetching && lpId) {
-            navigate(`/music/${lpId}`);
-        }
+        if (!isFetching && lpId) navigate(`/music/${lpId}`);
     }
 
-    if (isFetching) {
-        return <p>Refreshing music list...</p>;
-    }
+    if (isFetching) return <p>Refreshing music list...</p>;
 
-    if (isPending) {
-        return <p>Loading music list...</p>;
-    }
+    if (isPending) return <p>Loading music list...</p>;
 
-    if (isError) {
-        return <p>Error loading music list: {error.message}</p>;
-    }
+    if (isError) return <p>Error loading music list: {error.message}</p>;
 
     return (
         <>
-        <div className="w-full">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6">
             {/* toggle */}
-            <div className="flex ">
-                <div className="rounded-2xl">
-                    <span>오래된 순</span>
-                    <span>최신 순</span>
-                </div>
+            <div className="mt-4 flex items-center justify-end gap-3">
+                <SortToggle sort={order} onChange={setOrder} />
             </div>
 
             {/* Grid */}
