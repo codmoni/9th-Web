@@ -12,7 +12,7 @@ createRoot(document.getElementById('root')!).render(
     <SidebarProvider>
       <ModalControllProvider>
         <ToggleSearchBarProvider>
-          <App />
+            <App />
         </ToggleSearchBarProvider>
       </ModalControllProvider>
     </SidebarProvider>

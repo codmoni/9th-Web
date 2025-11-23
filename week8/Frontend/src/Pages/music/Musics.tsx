@@ -64,9 +64,6 @@ const Musics = () => {
 
     const debouncedSearch = useDebounce({ function: handleSearch, delay: 300 });
 
-    if (isPending) return <p>Loading music list...</p>;
-    if (isError) return <p>Error loading music list: {error.message}</p>;
-
     return (
         <>
         <ModalShell />
@@ -94,26 +91,44 @@ const Musics = () => {
             </div>
 
             {/* Grid */}
-            <section className="p-3 sm:p-4">
-                <ul className="grid grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-3">
-                    {data?.pages.map((d, idx) => (
-                        <React.Fragment key={idx}>
-                            {d.data.map((music) => (
-                                <MusicCard
-                                    key={music.id}
-                                    title={music.title}
-                                    createdAt={music.createdAt}
-                                    likes={music.likes}
-                                    thumbnail={music.thumbnail}
-                                    onClick={() => showLPDetail(music.id)}
-                                />
-                            ))}
-                        </React.Fragment>
-                    ))}
-                </ul>
+            {/* 1. 검색 결과 */}
+            {!isPending && data &&(
+                <section className="p-3 sm:p-4">
+                    <ul className="grid grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-3">
+                        {data?.pages.map((d, idx) => (
+                            <React.Fragment key={idx}>
+                                {d.data.map((music) => (
+                                    <MusicCard
+                                        key={music.id}
+                                        title={music.title}
+                                        createdAt={music.createdAt}
+                                        likes={music.likes}
+                                        thumbnail={music.thumbnail}
+                                        onClick={() => showLPDetail(music.id)}
+                                    />
+                                ))}
+                            </React.Fragment>
+                        ))}
+                    </ul>
 
-                <div ref={sentinelRef} style={{height:1}}></div>
-            </section>
+                    <div ref={sentinelRef} style={{height:1}}></div>
+                </section>
+            )}
+
+             {/* 2. pending */}
+            {isPending && (
+                <>
+                    <p>Loading music list...</p>
+                </>
+            )}
+
+            {/* 3. error */}
+            {isError && (
+                <>
+                    <p>Error loading music list</p>
+                </>
+            )}
+            
         </div>
         </>
     )
