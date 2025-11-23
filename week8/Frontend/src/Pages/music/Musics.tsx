@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useInfiniteLPList } from "../../apis/lps/caching/queryHooks";
@@ -10,6 +10,7 @@ import { ModalShell } from "../../Components/Modal";
 import { useToggleSearchSection } from "../../Hooks/ToggleSearchSection";
 import SearchInput from "../../Components/forms/SearchInput";
 import clsx from "clsx";
+import useDebounce from "../../Hooks/useDebounce";
 
 const Musics = () => {
     const navigate = useNavigate();
@@ -54,6 +55,13 @@ const Musics = () => {
 
     const { isSearchSectionOpen } = useToggleSearchSection();
 
+    const handleSearch = useCallback((search: string) => {
+        if (!search) return;
+        console.log("Searching LPs with:", search);
+    }, []);
+
+    const debouncedSearch = useDebounce({ function: handleSearch, delay: 300 });
+
     if (isPending) return <p>Loading music list...</p>;
     if (isError) return <p>Error loading music list: {error.message}</p>;
 
@@ -75,7 +83,7 @@ const Musics = () => {
                         : "max-h-0 opacity-0 transform -translate-y-2 pointer-events-none"
                 )}
             >
-                <SearchInput/>
+                <SearchInput onSearch={debouncedSearch} />
             </section>
 
             {/* toggle */}
