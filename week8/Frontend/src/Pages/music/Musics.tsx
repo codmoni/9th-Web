@@ -15,6 +15,7 @@ import useDebounce from "../../Hooks/useDebounce";
 const Musics = () => {
     const navigate = useNavigate();
     const [order, setOrder] = useState<"asc" | "desc">("asc");
+    const [searchValue, setSearchValue] = useState<string>(""); // 무한 스크롤용 검색어 상태
 
     const { 
         data, 
@@ -24,7 +25,7 @@ const Musics = () => {
         isPending,
         isError,
         error
-    } = useInfiniteLPList({ limit: 15, order});
+    } = useInfiniteLPList({ limit: 15, order, search: searchValue });
 
     console.log('Musics page - musics data:', data);
     
@@ -56,8 +57,9 @@ const Musics = () => {
     const { isSearchSectionOpen } = useToggleSearchSection();
 
     const handleSearch = useCallback((search: string) => {
-        if (!search) return;
         console.log("Searching LPs with:", search);
+        if (!search) return;
+        setSearchValue(search);
     }, []);
 
     const debouncedSearch = useDebounce({ function: handleSearch, delay: 300 });
