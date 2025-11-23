@@ -5,6 +5,9 @@ import { logout } from "../apis/auth/logout";
 import { HamburgerIcon } from "../assets/svg";
 import { useContext } from "react";
 import { SidebarContext } from "../Hooks/SidebarProvider";
+import { SearchIcon } from "../assets/svg";
+import { useToggleSearchSection } from "../Hooks/ToggleSearchSection";
+import { CloseIcon } from "../assets/svg";
 
 const Header = () => {
     const location = useLocation();
@@ -18,6 +21,8 @@ const Header = () => {
     const handleLogout = async () => {
         await logout();
     };
+
+    const { isSearchSectionOpen, toggleSearchSection } = useToggleSearchSection();
 
     const baseButton = 
         "inline-flex items-center justify-center rounded-md px-3.5 py-2 text-sm font-semibold transition";
@@ -46,36 +51,52 @@ const Header = () => {
                     </Link>
                 </div>
 
-                <nav className="space-x-2">
-                    {!isAuthenticated 
-                        ? (
+                <div className="flex items-center space-x-4">
+                    <button>
+                        {isSearchSectionOpen ? (
+                            <CloseIcon 
+                                className="h-3 w-3 text-zinc-200 cursor-pointer"
+                                onClick={toggleSearchSection}
+                            />
+                        ) : (
+                            <SearchIcon 
+                                className="h-5 w-5 text-zinc-200 cursor-pointer"
+                                onClick={toggleSearchSection}
+                            />
+                        )}
+                    </button>
+                    
+                    <nav className="space-x-2">
+                        {!isAuthenticated 
+                            ? (
+                            <NavLink
+                                to="/login"
+                                className={clsx(baseButton,{
+                                    [activeButton]: isLogin,
+                                    [inActiveButton]: !isLogin,
+                                })}
+                            >
+                                로그인
+                            </NavLink>
+                            ) : (
+                            <p
+                                className="inline-flex"
+                            >
+                                {userInfo?.name}님 반갑습니다.
+                            </p>
+                        )}
+
                         <NavLink
-                            to="/login"
+                            to="/signup"
                             className={clsx(baseButton,{
-                                [activeButton]: isLogin,
-                                [inActiveButton]: !isLogin,
+                                [activeButton]: isSignUp,
+                                [inActiveButton]: !isSignUp,
                             })}
                         >
-                            로그인
+                            회원가입
                         </NavLink>
-                        ) : (
-                        <p
-                            className="inline-flex"
-                        >
-                            {userInfo?.name}님 반갑습니다.
-                        </p>
-                    )}
-
-                    <NavLink
-                        to="/signup"
-                        className={clsx(baseButton,{
-                            [activeButton]: isSignUp,
-                            [inActiveButton]: !isSignUp,
-                        })}
-                    >
-                        회원가입
-                    </NavLink>
-                </nav>
+                    </nav>
+                </div>
             </div>
         </header>
         </>

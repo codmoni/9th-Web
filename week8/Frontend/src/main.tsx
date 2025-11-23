@@ -5,12 +5,15 @@ import App from './App.tsx'
 
 import { SidebarProvider } from './Hooks/SidebarProvider.tsx'
 import { ModalControllProvider } from './Hooks/ModalControllProvider.tsx'
+import { ToggleSearchBarProvider } from './Hooks/ToggleSearchSection.tsx'
 
 createRoot(document.getElementById('root')!).render(
   // <StrictMode>
     <SidebarProvider>
       <ModalControllProvider>
-        <App />
+        <ToggleSearchBarProvider>
+          <App />
+        </ToggleSearchBarProvider>
       </ModalControllProvider>
     </SidebarProvider>
   // </StrictMode>,

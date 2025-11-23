@@ -7,6 +7,9 @@ import SortToggle from "../../Components/buttons/SortToggle";
 import AddButton from "../../Components/buttons/AddButton";
 import { useModalControll } from "../../Hooks/ModalControllProvider";
 import { ModalShell } from "../../Components/Modal";
+import { useToggleSearchSection } from "../../Hooks/ToggleSearchSection";
+import SearchInput from "../../Components/forms/SearchInput";
+import clsx from "clsx";
 
 const Musics = () => {
     const navigate = useNavigate();
@@ -49,6 +52,8 @@ const Musics = () => {
 
     const { openModal } = useModalControll();
 
+    const { isSearchSectionOpen } = useToggleSearchSection();
+
     if (isPending) return <p>Loading music list...</p>;
     if (isError) return <p>Error loading music list: {error.message}</p>;
 
@@ -60,6 +65,18 @@ const Musics = () => {
                 className="fixed bottom-8 right-8 z-50"
                 onClick={() => openModal('ADD_LP')} 
             />
+
+
+            <section
+                className={clsx(
+                    "mt-4 p-4 transition-all duration-300 ease-in-out overflow-hidden",
+                    isSearchSectionOpen
+                        ? "max-h-32 opacity-100 translate-y-0"
+                        : "max-h-0 opacity-0 transform -translate-y-2 pointer-events-none"
+                )}
+            >
+                <SearchInput/>
+            </section>
 
             {/* toggle */}
             <div className="mt-4 flex items-center justify-end gap-3">
