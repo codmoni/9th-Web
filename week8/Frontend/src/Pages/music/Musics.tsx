@@ -11,6 +11,7 @@ import { useToggleSearchSection } from "../../Hooks/ToggleSearchSection";
 import SearchInput from "../../Components/forms/SearchInput";
 import clsx from "clsx";
 import useDebounce from "../../Hooks/useDebounce";
+import useThrottle from "../../Hooks/useThrottle";
 
 const Musics = () => {
     const navigate = useNavigate();
@@ -33,6 +34,8 @@ const Musics = () => {
         if (!isFetchingNextPage && lpId) navigate(`/music/${lpId}`);
     };
 
+    const throttledScroll = useThrottle({function: fetchNextPage, threshold: 5000});
+
     const sentinelRef = useRef<HTMLDivElement | null>(null);
     useEffect(()=> {
         if (!sentinelRef.current) return;
@@ -43,7 +46,7 @@ const Musics = () => {
             const first = entries[0];
 
             if (first.isIntersecting && hasNextPage && !isFetchingNextPage) {
-                fetchNextPage();
+                throttledScroll();
             }
         });
 
@@ -128,7 +131,13 @@ const Musics = () => {
                     <p>Error loading music list</p>
                 </>
             )}
-            
+
+            {/* 4. 없는 결과 */}
+            {!isPending && data && data.pages[0].data.length === 0 && (
+                <>
+                    <p>검색 결과가 없습니다.</p>
+                </>
+            )}
         </div>
         </>
     )

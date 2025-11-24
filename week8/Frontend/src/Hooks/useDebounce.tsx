@@ -1,11 +1,11 @@
 import { useRef, useEffect } from "react";
 
-interface DebounceProps {
+interface UseDebounceProps {
     function: (...args: any[]) => void;
     delay: number;
 }
 
-const useDebounce = ({ function: func, delay }: DebounceProps) => {
+const useDebounce = ({ function: func, delay }: UseDebounceProps) => {
     const timeRef = useRef<number | null>(null);
 
     const debouncedFunction = (...args: any[]) => {
