@@ -3,15 +3,16 @@ import Counter from "./Counter";
 
 type ItemProps = {
     item: CartItem;
+    onRemove?: () => void;
 }
 
-const Item = ({ item }: ItemProps) => {
+const Item = ({ item, onRemove }: ItemProps) => {
     return (
         <>
         <div className="flex justify-between items-center p-4 border-b border-gray-200">
             <div className="flex items-center gap-2">
                 {/* 썸네일 */}
-                <div className="w-20 h-20 rounded-md overflow-hidden flex-shrink-0">
+                <div className="w-20 h-20 rounded-md overflow-hidden shrink-0">
                     <img 
                         src={item.img} 
                         alt={item.title} 
@@ -27,8 +28,16 @@ const Item = ({ item }: ItemProps) => {
                 </div>
             </div>
 
-            <div className="flex items-center">
-                <Counter />
+            <div className="flex items-center gap-2">
+                <Counter id={item.id} />
+                {onRemove && (
+                    <button
+                        onClick={onRemove}
+                        className="text-xs text-gray-400 hover:text-red-500 transition-colors"
+                    >
+                        삭제
+                    </button>
+                )}
             </div>
         </div>
         </>
