@@ -1,28 +1,21 @@
-import { useDispatch, useSelector } from "react-redux";
-import type { RootState, AppDispatch } from "../store/store";
-import { increase, decrease, removeItem } from "../store/cartSlice";
+import useCartStore from "../store/useCartStore";
 
 type CounterProps = {
     id: string;
 };
 
 const Counter = ({ id }: CounterProps) => {
-    const dispatch = useDispatch<AppDispatch>();
-    const count = useSelector(
-        (state: RootState) =>
-            state.cart.items.find((item) => item.id === id)?.amount ?? 0
-    );
+    const count = useCartStore((state) => {
+        const targetItem = state.items.find((item) => item.id === id);
+        return targetItem ? targetItem.amount : 0;
+    });
 
     const handleDecrement = () => {
-        if (count <= 1) {
-            dispatch(removeItem(id));
-            return;
-        }
-        dispatch(decrease(id));
+        useCartStore.getState().decrease(id);
     };
 
     const handleIncrement = () => {
-        dispatch(increase(id));
+        useCartStore.getState().increase(id);
     };
 
     const buttonStyle = "w-6 h-6 rounded-md bg-gray-200 text-gray-500 hover:bg-gray-300 transition-colors duration-200 ease-in-out";

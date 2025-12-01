@@ -1,9 +1,7 @@
 import clsx from "clsx";
-import { useDispatch, useSelector } from "react-redux";
 import Item from "./Item";
-import type { RootState, AppDispatch } from "../store/store";
-import { removeItem } from "../store/cartSlice";
-import { openModal } from "../store/modalSlice";
+import useModalStore from "../store/useModalStore";
+import useCartStore from "../store/useCartStore";
 
 type FooterProps = {
     isOpen: boolean;
@@ -11,14 +9,13 @@ type FooterProps = {
 }
 
 const Footer = ({ isOpen, onClose }: FooterProps) => {
-    const dispatch = useDispatch<AppDispatch>();
-    const items = useSelector((state: RootState) => state.cart.items);
+    const items = useCartStore((state) => state.items);
     const itemsInCart = items.filter((item) => item.amount > 0);
-    const totalAmount = useSelector((state: RootState) => state.cart.amount);
-    const totalPrice = useSelector((state: RootState) => state.cart.total);
+    const totalAmount = useCartStore((state) => state.amount);
+    const totalPrice = useCartStore((state) => state.total);
 
     const onDeleteAll = () => {
-        dispatch(openModal());
+        useModalStore.getState().openModal();
     }
 
     return (
@@ -45,7 +42,7 @@ const Footer = ({ isOpen, onClose }: FooterProps) => {
                                 <Item
                                     key={item.id}
                                     item={item}
-                                    onRemove={() => dispatch(removeItem(item.id))}
+                                    onRemove={() => useCartStore.getState().removeItem(item.id)}
                                 />
                             ))
                         )}

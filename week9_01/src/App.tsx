@@ -3,7 +3,7 @@ import Item from './components/Item'
 import cartItems from './constants/cartItem'
 import Footer from './components/Footer'
 import Modal from './components/Modal'
-import { useSelector } from 'react-redux'
+import useModalStore from './store/useModalStore'
 
 function App() {
   const [isFooterOpen, setIsFooterOpen] = useState(true);
@@ -12,7 +12,7 @@ function App() {
     setIsFooterOpen(!isFooterOpen);
   }
 
-  const isModalOpen = useSelector((state: any) => state.modal.isOpen);
+  const isModalOpen = useModalStore((state) => state.isOpen);
 
   return (
     <>

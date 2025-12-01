@@ -1,14 +1,12 @@
-import { useDispatch } from "react-redux";
-import type { AppDispatch } from "../store/store";
-import { clearCart } from "../store/cartSlice";
-import { closeModal } from "../store/modalSlice";
+import useModalStore from "../store/useModalStore";
+import useCartStore from "../store/useCartStore";
 
 const Modal = () => {
-    const dispatch = useDispatch<AppDispatch>();
+    const closeModal = useModalStore((state) => state.closeModal);
 
     const handleDeleteAllItems = () => {
-        dispatch(clearCart());
-        dispatch(closeModal());
+        useCartStore.getState().clearCart();
+        closeModal(false);
     };
 
     return (
@@ -24,7 +22,7 @@ const Modal = () => {
                         네
                     </button>
                     <button 
-                        onClick={() => dispatch(closeModal())}
+                        onClick={() => closeModal(false)}
                         className="bg-gray-400 rounded-md p-2 text-md cursor-pointer"
                     >
                         아니요
